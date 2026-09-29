@@ -145,3 +145,18 @@ Set-DhcpServerv4Scope -ScopeId $AdresseReseau -Name $NomEtendue -State Active
 # Vérification des étendues configurées sur le serveur
 Get-DhcpServerv4Scope -ScopeId $AdresseReseau
 ```
+## Script 6 (Crée un compte utilisateur dans l'AD + l'ajout dans le groupe admin)
+```powershell
+# Étape 1 : Créer un compte utilisateur dans l'AD
+New-ADUser -Name "admin" `
+-SamAccountName "admin" `
+-UserPrincipalName "admin@sodecaf.local" `
+-Path "CN=Users,DC=sodecaf,DC=local" `
+-AccountPassword (ConvertTo-SecureString "Btssio2017" -AsPlainText -Force) `
+-Enabled $true `
+-PasswordNeverExpires $true `
+-Description "Compte administrateur avec droits de connexion à distance"
+
+# Étape 2 : Ajouter l'utilisateur au groupe Administrateurs
+Add-ADGroupMember -Identity "Administrateurs" -Members "admin"
+```
