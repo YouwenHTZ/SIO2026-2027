@@ -122,6 +122,11 @@ Add-DhcpServerInDC -DnsName $NomServeur -IPAddress $AdresseServeur
 # Post-déploiement du service DHCP
 Set-ItemProperty –Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ServerManager\Roles\12 –Name ConfigurationState –Value 2
 
+# Effacer l'étendue si elle existe deja
+if ((Get-DhcpServerv4Scope -ScopeId $AdresseReseau) -ne $null) {
+    Remove-DhcpServerv4Scope -ScopeId $AdresseReseau -force
+}
+
 # Création d'une étendue
 Add-DhcpServerv4Scope -Name $NomEtendue -StartRange $IPDebut -EndRange $IPFin -SubnetMask $Masque
 
@@ -132,11 +137,11 @@ Set-DhcpServerv4OptionDefinition -OptionId 6 -DefaultValue $IPPasserelle
 Set-DhcpServerv4OptionDefinition -OptionId 6 -DefaultValue $DNSPrimaire,$DNSSecondaire
 
 # Ajout de la durée du bail
-Set-DhcpServerv4OptionDefinition -OptionId 51 -DefaultValue $DuréeDeBail
+Set-DhcpServerv4OptionValue -OptionId 51 -ScopeId $AdresseReseau -Value $DuréeDeBail
 
 # Activation de l'étendue DHCP
 Set-DhcpServerv4Scope -ScopeId $AdresseReseau -Name $NomEtendue -State Active
 
 # Vérification des étendues configurées sur le serveur
-Get-DhcpServerv4Scope
+Get-DhcpServerv4Scope -ScopeId $AdresseReseau
 ```
