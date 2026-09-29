@@ -4,7 +4,7 @@
 <#------------------------------------------------------------------
 Apprentissage PowerShell - Script n° 1
 Fonction : Ce script cherche un fichier dans un dossier donné
-Auteur CLB – 28/09/2026
+Auteur YH – 28/09/2026
 --------------------------------------------------------------------#>
 $cherche = $args[0]
 $dossier = $args[1]
@@ -22,7 +22,7 @@ Write-Host -foregroundcolor yellow "le fichier $cherche est présent dans $nbfic
 ```powershell
 <#-------------------------------------------------------------------
 Apprentissage PowerShell - Script n° 2
-Auteur CLB – 28/09/2026
+Auteur YH – 28/09/2026
 ---------------------------------------------------------------------#>
 $dossier = $args[0]
 Write-Host "calcul en cours sur $dossier"
@@ -39,7 +39,7 @@ Get-ChildItem -Path $dossier -Recurse -Force -ErrorAction SilentlyContinue | `
 ```powershell
 <#-------------------------------------------------------------------
 Apprentissage PowerShell - Script n° 3
-Auteur CLB – 28/09/2026
+Auteur YH – 28/09/2026
 ---------------------------------------------------------------------#>
 $listeCouleurs = @("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")
 $couleur = ""
@@ -55,11 +55,11 @@ while ($couleur -ne 'stop') {
     }
 }
 ```
-## Script sodecaf.ps1 (Crée un dossier ou un sous dossier)
+## Script 4 (Crée un dossier ou un sous dossier)
 ```powershell
 <#-------------------------------------------------------------------
 Apprentissage PowerShell - Script sodecaf.ps1
-Auteur CLB – 28/09/2026
+Auteur YH – 28/09/2026
 ---------------------------------------------------------------------#>
 ipcsv ".\utilisateurs sodecaf.csv" -Delimiter ";" | foreach {
     $triGramme=$_.firstname.substring(0,1)+$_.lastname.substring(0,1)
