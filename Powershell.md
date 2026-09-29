@@ -89,5 +89,54 @@ ipcsv ".\utilisateurs sodecaf.csv" -Delimiter ";" | foreach {
 ```
 ## Script 5 (Crée un serveur DHCP avec une étendue)
 ```powershell
+<#-------------------------------------------------------------------
+Apprentissage PowerShell - Script tp4-DHCP.ps1
+Fonction : installation et configuration du service DHCP
+Auteur YH – 28/09/2026
+---------------------------------------------------------------------#>
 
+$NomServeur = "srv-win-core1.sodecaf.local"
+$AdresseServeur = "172.16.0.2"
+$NomEtendue = "DHCP_sodecaf"
+$IPDebut = "172.16.0.150"
+$IPFin = "172.16.0.200"
+$Masque = "255.255.255.0"
+$IPPasserelle = "172.16.0.254"
+$DNSPrimaire = "172.16.0.1"
+$DNSSecondaire = "1.1.1.1"
+$DuréeDeBail = "14400"
+$AdresseReseau = "172.16.0.0"
+
+# Installation de la fonctionnalité DHCP sur le serveur
+Install-WindowsFeature -Name DHCP -IncludeManagementTools
+
+# Création d'un groupe de sécurité DHCP
+Add-DhcpServerSecurityGroup
+
+# Redemarrage du serveur
+Restart-Service Add-DhcpServerSecurityGroup
+
+# Autoriser le serveur DHCP dans l'annuaire
+Add-DhcpServerInDC -Dnsname $NomServeur -IpAddress $AdresseServeur
+
+# Post-déploiement du serveur DHCP
+Set-ItemProperty –Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ServerManager\Roles\12 –Name ConfigurationState –Value 2
+
+# Création d'une étendue
+Add-DhcpServerv4Scope -Name $NomEtendue -StartRange $IPDebut -EndRange $IPFin -SubnetMask $Masque
+
+# Ajout des options de l'etendue
+Set-DhcpServerv4OptionDefinition -OptionId 6 -DefaultValue $IPPasserelle
+
+# Ajout d'un DNS primaire, DNS Secondaire
+Set-DhcpServerv4OptionDefinition -OptionId 6 -DefaultValue $DNSPrimaire,$DNSSecondaire
+
+# Ajout de la durée du bail
+Set-DhcpServerv4OptionDefinition -OptionId 51 -DefaultValue $DuréeDeBail
+
+# Activation de l'étendue DHCP
+Set-DhcpServerv4Scope -ScopeId $AdresseReseau -Name $NomEtendue -State Active
+
+# Vérification des étendues configurées sur le serveur
+Get-DhcpServerv4Scope
 ```
