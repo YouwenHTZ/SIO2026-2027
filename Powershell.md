@@ -87,3 +87,7 @@ ipcsv ".\utilisateurs sodecaf.csv" -Delimiter ";" | foreach {
     Write-Host -ForegroundColor $couleur ($_.firstname+" "+$_.lastname+" ("+$triGramme+") "+$_.phone1)
 }
 ```
+## Script 5 (Crée un serveur DHCP)
+```powershell
+
+```
