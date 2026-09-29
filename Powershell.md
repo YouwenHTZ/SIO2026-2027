@@ -113,13 +113,13 @@ Install-WindowsFeature -Name DHCP -IncludeManagementTools
 # Création d'un groupe de sécurité DHCP
 Add-DhcpServerSecurityGroup
 
-# Redemarrage du serveur
-Restart-Service Add-DhcpServerSecurityGroup
+# Redémarrage du service DHCP
+Restart-Service dhcpserver
 
 # Autoriser le serveur DHCP dans l'annuaire
-Add-DhcpServerInDC -Dnsname $NomServeur -IpAddress $AdresseServeur
+Add-DhcpServerInDC -DnsName $NomServeur -IPAddress $AdresseServeur
 
-# Post-déploiement du serveur DHCP
+# Post-déploiement du service DHCP
 Set-ItemProperty –Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ServerManager\Roles\12 –Name ConfigurationState –Value 2
 
 # Création d'une étendue
